@@ -25,7 +25,7 @@ spec:
     spec:
       nodeSelector:
         #node-role.kubernetes.io/control-plane: ""
-        node-role.kubernetes.io/control-plane: "true"
+        node-role.kubernetes.io/controlplane: "true"
       securityContext:
         runAsUser: 1001
       tolerations:
