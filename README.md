@@ -15,7 +15,7 @@ List of adjustments made on the original files:
 - In the file `openstack-cloud-controller-manager-ds.yaml`, line 28, under `spec: template: spec: nodeSelector:`, the label `node-role.kubernetes.io/control-plane: ""` must be substituted with `node-role.kubernetes.io/control-plane: "true"`
 
 
-License
+## License
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
