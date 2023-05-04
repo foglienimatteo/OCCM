@@ -33,17 +33,16 @@ spec:
         effect: NoSchedule
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
-        value: "true"
       - key: node-role.kubernetes.io/controlplane
         effect: NoSchedule
         value: "true"
       - key: node-role.kubernetes.io/etcd
         effect: NoExecute
-        value: "true"      
+        value: "true"
       serviceAccountName: cloud-controller-manager
       containers:
         - name: openstack-cloud-controller-manager
-          image: docker.io/k8scloudprovider/openstack-cloud-controller-manager:latest
+          image: docker.io/k8scloudprovider/openstack-cloud-controller-manager:v1.22.0
           args:
             - /bin/openstack-cloud-controller-manager
             - --v=1
@@ -66,7 +65,7 @@ spec:
               cpu: 200m
           env:
             - name: CLOUD_CONFIG
-              value: /etc/config/cloud.conf
+              value: /etc/config/cloud-config
       hostNetwork: true
       volumes:
       - hostPath:
