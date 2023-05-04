@@ -11,9 +11,50 @@ The three files here stored were originally downloaded from the following links 
 - https://raw.githubusercontent.com/kubernetes/cloud-provider-openstack/master/manifests/controller-manager/cloud-controller-manager-role-bindings.yaml
 - https://raw.githubusercontent.com/kubernetes/cloud-provider-openstack/master/manifests/controller-manager/openstack-cloud-controller-manager-ds.yaml
 
-List of adjustments made on the original files:
-- In the file `openstack-cloud-controller-manager-ds.yaml`, line 28, under `spec: template: spec: nodeSelector:`, the label `node-role.kubernetes.io/control-plane: ""` must be substituted with `node-role.kubernetes.io/control-plane: "true"`
+List of adjustments made on the original files in the file `openstack-cloud-controller-manager-ds.yaml`:
+- line 28, under `spec: template: spec: nodeSelector:`, the label `node-role.kubernetes.io/control-plane: ""` must be substituted with `node-role.kubernetes.io/control-plane: "true"`
+- line 46, the `image: registry.k8s.io/provider-os/openstack-cloud-controller-manager:v1.27.1` has been changed to `docker.io/k8scloudprovider/openstack-cloud-controller-manager:latest`
+- line 49, `- --cluster-name=$(CLUSTER_NAME)` deleted
+- line 69, it has been deleted `- name: CLUSTER_NAME value: kubernetes`
+- line 71, under `spec: template: spec: toleration:`, the section must be filled with the following tolerations:
 
+
+```yaml
+spec:
+  ...
+  template:
+  ...
+    spec:
+      ...
+      tolerations:
+      - key: node.cloudprovider.kubernetes.io/uninitialized
+        value: "true"
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+        value: "true"
+      - key: node-role.kubernetes.io/controlplane
+        effect: NoSchedule
+        value: "true"
+      - key: node-role.kubernetes.io/etcd
+        effect: NoExecute
+        value: "true"
+```
+
+Also there is a slight change in  `cloud-controller-manager-roles.yaml`: under `items: rules: - apiGroups: resources:` the following lines 45-50 have been deleted:
+```yaml
+items:
+  ...
+  rules:
+  ...
+  - apiGroups:
+    - ""
+    resources:
+    - services/status
+    verbs:
+    - patch
+  ...
+```
 
 ## License
 
