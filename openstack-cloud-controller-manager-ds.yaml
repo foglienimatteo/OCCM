@@ -24,7 +24,7 @@ spec:
         k8s-app: openstack-cloud-controller-manager
     spec:
       nodeSelector:
-        node-role.kubernetes.io/controlplane: ""
+        node-role.kubernetes.io/controlplane: "true"
       securityContext:
         runAsUser: 1001
       tolerations:
